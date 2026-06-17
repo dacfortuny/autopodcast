@@ -1,0 +1,6 @@
+dropbox
+feedgen
+flask
+gunicorn
+mutagen
+python-dotenv
