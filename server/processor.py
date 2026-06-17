@@ -12,7 +12,9 @@ import dropbox.sharing
 from feedgen.feed import FeedGenerator
 from mutagen.mp4 import MP4
 
-DROPBOX_TOKEN = os.environ["DROPBOX_TOKEN"]
+DROPBOX_APP_KEY = os.environ["DROPBOX_APP_KEY"]
+DROPBOX_APP_SECRET = os.environ["DROPBOX_APP_SECRET"]
+DROPBOX_REFRESH_TOKEN = os.environ["DROPBOX_REFRESH_TOKEN"]
 FEED_URL = os.environ["FEED_URL"]
 PODCAST_TITLE = os.environ.get("PODCAST_TITLE", "Auto Podcast")
 PODCAST_DESCRIPTION = os.environ.get("PODCAST_DESCRIPTION", "Auto-generated podcast from NotebookLM")
@@ -61,7 +63,11 @@ def _get_or_create_link(dbx: dropbox.Dropbox, path: str) -> str:
 
 
 def process_new_files() -> None:
-    dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+    dbx = dropbox.Dropbox(
+        oauth2_refresh_token=DROPBOX_REFRESH_TOKEN,
+        app_key=DROPBOX_APP_KEY,
+        app_secret=DROPBOX_APP_SECRET,
+    )
     episodes = _load_episodes()
     known = {ep["filename"] for ep in episodes}
 
